@@ -11,12 +11,12 @@ with open("day01_data.txt") as f:
         else:
             item_calories = int(line.strip())
             current_total += item_calories
-
     else:
         if current_total > 0:
             elf_totals.append(current_total)
 
-    # sort the list in descending order
+    # sort the list in ascending order
     elf_totals.sort()
+    
     print(f" Top Elf - Total Calories: {max(elf_totals)}")
     print(f" Top Three Elves - Total Calories: {sum(elf_totals[-3:])}")
