@@ -1,24 +1,34 @@
-def get_priority(item):
-    item = ord(item)
-    priority = item - 96 if item > 90 else item - 38
-    return priority
+def check_overlaps(elf1, elf2):
+    combined = [min(elf1 + elf2), max(elf1 + elf2)]    
+    return length(combined) <= length(elf1) + length(elf2)
 
-def s1(inventory):
-    inventory = inventory.strip()
-    num_items = len(inventory)
-    compartment1 = set(inventory[:num_items//2])
-    compartment2 = set(inventory[num_items//2:])
-    res, = compartment1 & compartment2
-    return get_priority(res)
+def check_contains(elf1, elf2):
+    combined = [min(elf1 + elf2), max(elf1 + elf2)] 
+    return (length(combined) == length(elf1)) | (length(combined) == length(elf2))   
 
-def s2(group):
-    elf1 = set(group[0].strip())
-    elf2 = set(group[1].strip())
-    elf3 = set(group[2].strip())
-    res, = elf1 & elf2 & elf3
-    return get_priority(res)
+def length(x):
+    return int(abs(x[0]-x[1]))
 
-with open("./2022/day03/day03_data.txt") as f:
+def s1(pair):
+    pair = pair.strip().split(',')
+    elf1 = [int(pair[0].split('-')[0]), int(pair[0].split('-')[1])]
+    elf2 = [int(pair[1].split('-')[0]), int(pair[1].split('-')[1])]
+    res = check_contains(elf1, elf2)
+    return res
+
+def s2(pair):
+    pair = pair.strip().split(',')
+    elf1 = [int(pair[0].split('-')[0]), int(pair[0].split('-')[1])]
+    elf2 = [int(pair[1].split('-')[0]), int(pair[1].split('-')[1])]
+    res = check_overlaps(elf1, elf2)
+    return res
+
+with open("./2022/day04/day04_test_data.txt") as f:
+    lines = f.readlines()
+    print(f" test s1: {sum(map(s1, lines))}")
+    print(f" test s2: {sum(map(s2, lines))}")
+
+with open("./2022/day04/day04_data.txt") as f:
     lines = f.readlines()
     print(f" s1: {sum(map(s1, lines))}")
-    print(f" s2: {sum(map(s2, [lines[i:i+3] for i in range(0, len(lines), 3)]))}")
+    print(f" s2: {sum(map(s2, lines))}")
