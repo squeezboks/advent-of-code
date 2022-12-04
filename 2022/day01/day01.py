@@ -1,4 +1,4 @@
-with open("day01_data.txt") as f:
+with open("./2022/day01/ay01_data.txt") as f:
     lines = f.readlines()
 
     current_total = 0

@@ -10,7 +10,7 @@ sol2_dict = {
     'C X': ['opp: scsr, you: papr, result: lose', 2, 0], 'C Y': ['opp: scsr, you: scsr, result: draw', 3, 3], 'C Z': ['opp: scsr, you: rock, result: win!', 1, 6]
 }
 
-with open("day02_data.txt") as f:
+with open("./2022/day02/day02_data.txt") as f:
     lines = f.readlines()
     games_sol1 = []
     games_sol2 = []
