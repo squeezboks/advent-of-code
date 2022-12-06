@@ -25,33 +25,39 @@ def parse_moves(lines):
         moves.append([int(i) for i in line.split() if i.isdigit()])
     return moves
 
-def process_moves(stack, moves, crane):
-    for move in moves:
-        stack = apply_move(stack, move, crane)
-    return stack
+def rxrx_apply_moves_9000(stack, moves):
+    if not moves:
+        return stack
+    else:
+        move = moves.pop(0)
+        n = move[0]
+        src_stack = move[1] - 1
+        tgt_stack = move[2] - 1
+        for i in range(n):
+            stack[tgt_stack].append(stack[src_stack].pop())
+        return rxrx_apply_moves_9000(stack, moves)
 
-def apply_move(stack, move, crane):
-    n = move[0]
-    src_stack = move[1] - 1
-    tgt_stack = move[2] - 1
-    match crane:
-        case 'CrateMover9000':
-            for i in range(n):
-                stack[tgt_stack].append(stack[src_stack].pop())
-        case 'CrateMover9001':
-            stack[tgt_stack].extend(stack[src_stack][-n:])
-            del stack[src_stack][-n:]
-    return stack
+def rxrx_apply_moves_9001(stack, moves):
+    if not moves:
+        return stack
+    else:
+        move = moves.pop(0)
+        n = move[0]
+        src_stack = move[1] - 1
+        tgt_stack = move[2] - 1
+        stack[tgt_stack].extend(stack[src_stack][-n:])
+        del stack[src_stack][-n:]
+        return rxrx_apply_moves_9001(stack, moves)
 
 def s1(lines):
     stack, moves = parse_input(lines)
-    stack = process_moves(stack, moves, 'CrateMover9000')
+    stack = rxrx_apply_moves_9000(stack, moves)
     res = "".join([col[-1] for col in stack])
     return res
 
 def s2(lines):
     stack, moves = parse_input(lines)
-    stack = process_moves(stack, moves, 'CrateMover9001')
+    stack = rxrx_apply_moves_9001(stack, moves)
     res = "".join([col[-1] for col in stack])
     return res
 
