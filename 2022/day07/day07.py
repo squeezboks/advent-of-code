@@ -1,10 +1,18 @@
 from collections import defaultdict
 
+def pretty(d, indent=0):
+    for key, value in d.items():
+        if isinstance(value, dict):
+            print(' ' * indent + f" - {key} (dir)")
+            pretty(value, indent+1)
+        else:
+            print(' ' * indent + f" - {key} (file, size = {value})")
+
+
 def build_tree(lines):
     path = []
-    root = dict()
+    root = {'/': dict()}
     directory = root
-    print(f'current path is: {path}')
     for line in lines:
         # process the line
         if line.startswith('$'):
@@ -12,76 +20,34 @@ def build_tree(lines):
             if line.startswith('$ cd'):
                 new = line.split()[2]
                 # update current directory path
-                path = change_directory(path, new)
-                print(root)
-            elif line.startswith('$ ls'):
-                #user input, ls
-                print(f"user listing contents of {path}")
-                # create a new dict for the directory
-                directory[path[-1]] = dict()
-                # switch to that new dict
-                directory = directory[path[-1]]
+                path = change_path(path, new)
+                # update working directory
+                directory = root
+                for i in path:
+                    directory = directory[i]
         else:
             #system output, either files or dirs
-            print(f" - system output > {line}")
             if line.startswith('dir'):
                 directory[line.split()[1]] = dict()
             else:
                 directory[line.split()[1]] = int(line.split()[0])
-    return directory
+    return root
 
-def rxrx_build_tree(current, directory, lines):
-    print(f'current path is: {current}')
-    print(f'current dir contents are: {directory}')
-    if not lines:
-        # no lines left, return
-        return directory
-    else:
-        # process the line, update the tree and call the function again
-        line = lines.pop(0)
-        if line.startswith('$ cd '):
-            #user input, cd
-            new = line.split()[2]
-            current = change_directory(current, new)
-            directory[current[-1]] = dict()
-            directory = directory[current[-1]]
-        elif line.startswith('$ ls'):
-            #user input, ls
-            print(f"user listing contents of {current}")
-        else:
-            #system output, either files or dirs
-            print(f" - system output > {line}")
-            if line.startswith('dir'):
-                directory[line.split()[1]] = dict()
-            else:
-                directory[line.split()[1]] = int(line.split()[0])
-        return rxrx_build_tree(current, directory, lines)
-
-def change_directory(current, new):
+def change_path(current, new):
     if new == '..':
-        old = current.pop()
-        new = current[-1]
-        print(f">> user changing directory from {old} to {new}")
+        current.pop()
     elif new == '/':
         current = ['/']
-        print(f">> user changing directory to root")
     else:
-        old = current
         current.append(new)
-        print(f">> user changing directory from {old} to {new}")
-    
     return current
 
 def parse_system_out(current, tree, line):
     pass
 
 def s1(data):
-    files = dict()
-    current = ['/']
-    files[current[-1]] = dict()
-    #files = rxrx_build_tree(current, files, data)
     files = build_tree(data)
-    print(files)
+    pretty(files)
 
 def s2(data):
     pass
