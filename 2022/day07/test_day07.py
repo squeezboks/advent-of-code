@@ -1,7 +1,4 @@
 from day07 import *
-
-def test_parse_input():
-    pass
 '''
 / (dir)
   - a (dir)
@@ -19,8 +16,30 @@ def test_parse_input():
     - k (file, size=7214296)
 '''
 
+def test_build_directory():
+    with open("./2022/day07/test_day07_data.txt") as f:
+        lines = f.read().splitlines()
+        result = build_directory(lines)
+    assert result == {'/': {'a': {'e': {'i': 584}, 'f': 29116, 'g': 2557, 'h.lst': 62596}, 'b.txt': 14848514, 'c.dat': 8504156, 'd': {'j': 4060174, 'd.log': 8033020, 'd.ext': 5626152, 'k': 7214296}}}
+
+def test_change_path():
+    assert change_path(['a','b','c'],'.') == ['a','b','c']
+    assert change_path(['a','b','c'],'..') == ['a','b']
+    assert change_path(['a','b','c'],'/') == ['/']
+    assert change_path(['a','b','c'],'d') == ['a','b','c','d']
+
+def test_get_directory_size():
+    assert get_directory_size('', dict(), {'e': {'i': 584}}) == 584
+    assert get_directory_size('', dict(), {'a': {'e': {'i': 584}, 'f': 29116, 'g': 2557, 'h.lst': 62596}}) == 94853
+    assert get_directory_size('', dict(), {'d': {'j': 4060174, 'd.log': 8033020, 'd.ext': 5626152, 'k': 7214296}}) == 24933642
+    assert get_directory_size('', dict(), {'/': {'a': {'e': {'i': 584}, 'f': 29116, 'g': 2557, 'h.lst': 62596}, 'b.txt': 14848514, 'c.dat': 8504156, 'd': {'j': 4060174, 'd.log': 8033020, 'd.ext': 5626152, 'k': 7214296}}}) == 48381165
+
 def test_s1():
-    pass
+    with open("./2022/day07/test_day07_data.txt") as f:
+        lines = f.read().splitlines()
+        assert s1(lines) == 95437
 
 def test_s2():
-    pass
+    with open("./2022/day07/test_day07_data.txt") as f:
+        lines = f.read().splitlines()
+        assert s2(lines) == 24933642
