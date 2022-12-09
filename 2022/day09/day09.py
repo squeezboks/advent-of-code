@@ -18,11 +18,11 @@ def process_moves(moves, rope):
                 rope[index].append(head)
             else:
                 # knot is tail knot
-                tail = update_tail(rope[index-1][-1], rope[index][-1], rope[index-1][-2])
+                tail = update_tail(rope[index-1][-1], rope[index][-1])
                 rope[index].append(tail)
     return rope
 
-def update_tail(head, tail, prev_head):
+def update_tail(head, tail):
     vect = (head[0]-tail[0], head[1]-tail[1])
     norm = (
         vect[0]/abs(vect[0]) if abs(vect[0]) != 0 else 0, 
