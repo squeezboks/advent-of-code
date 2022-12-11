@@ -1,5 +1,4 @@
 import re
-import cProfile
 from collections import deque
 
 def parse_input(data):
