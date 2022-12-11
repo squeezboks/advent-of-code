@@ -44,6 +44,7 @@ def s1(data):
         history = process_instr(instr, history)
     
     for index, cycle in enumerate(history['cycle']):
+        print(f"ind: {index}, cycle: {cycle}")
         if cycle == 20 or not ((cycle-20) % 40):
             x = history['x'][index]
             signal_strength.append(cycle * x)

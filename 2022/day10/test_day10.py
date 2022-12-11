@@ -14,6 +14,14 @@ def test_process_instr():
     history = process_instr(instr, history)
     assert history == {'cycle':[1,2,3,4], 'x':[1,1,1,4]}
 
+    instr = 'addx'
+    history = process_instr(instr, history)
+    assert history == {'cycle':[1,2,3,4,5], 'x':[1,1,1,4,4]}
+
+    instr = -5
+    history = process_instr(instr, history)
+    assert history == {'cycle':[1,2,3,4,5,6], 'x':[1,1,1,4,4,-1]}
+
 def test_get_signal_strength():
     history = {'cycle':[1,2,3,4,5,6], 'x':[1,1,1,4,4,-1]}
     assert get_signal_strength(1, history) == 1
