@@ -50,9 +50,11 @@ def s1(data):
     return inspections[-1] * inspections[-2]
 
 def terrible_business(monkeys):
+    
     worry_reducer = 1
     for monkey in monkeys:
         worry_reducer = worry_reducer * monkey['test'][0]
+    
     for monkey in monkeys:
         while monkey['items']:
             item = monkey['items'].popleft()
